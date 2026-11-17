@@ -6,7 +6,7 @@
 
 ## Status
 
-Initially **private** repository, `DerCodeBastler/Passwort-Button`. This package does not authorize public publication. Firmware **1.1.0** is byte-for-byte identical to the supplied ZIP. Only documentation, visible setup text and development support have changed. The setup interface remains German; English instructions are included.
+**Public open-source project** `DerCodeBastler/Passwort-Button`, published on 2026-11-17. Firmware **1.1.0** is byte-for-byte identical to the supplied ZIP. Only documentation, visible setup text and development support have changed. The setup interface remains German; English instructions are included.
 
 ## Features and requirements
 
@@ -52,4 +52,4 @@ The original project contribution is available under the [MIT License](LICENSE),
 
 ## Contact
 
-Use this repository's issues for questions, bugs and suggestions. While private, participants need repository access. GitHub has no general private direct-message inbox. The noreply address is not a contact address. For vulnerabilities see [SECURITY.md](SECURITY.md).
+Use this repository's issues for questions, bugs and suggestions. GitHub has no general private direct-message inbox. The noreply address is not a contact address. For vulnerabilities see [SECURITY.md](SECURITY.md).

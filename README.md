@@ -6,7 +6,7 @@
 
 ## Projektstand
 
-Zunächst **privates** Repository `DerCodeBastler/Passwort-Button`. Eine öffentliche Veröffentlichung ist nicht Bestandteil dieses Pakets. Firmware **1.1.0** bleibt bytegleich zum gelieferten ZIP; nur Dokumentation, sichtbare Einrichtungstexte und Entwicklungsunterstützung wurden überarbeitet. Die Einrichtungsoberfläche ist deutsch; eine englische Anleitung liegt bei.
+**Öffentliches Open-Source-Projekt** `DerCodeBastler/Passwort-Button`, veröffentlicht am 17.11.2026. Firmware **1.1.0** bleibt bytegleich zum gelieferten ZIP; nur Dokumentation, sichtbare Einrichtungstexte und Entwicklungsunterstützung wurden überarbeitet. Die Einrichtungsoberfläche ist deutsch; eine englische Anleitung liegt bei.
 
 ## Funktionen und Voraussetzungen
 
@@ -56,4 +56,4 @@ Der eigene Projektanteil steht unter der [MIT-Lizenz](LICENSE), Copyright (c) 20
 
 ## Kontakt
 
-Fragen, Fehler und Vorschläge bitte über die Issues dieses Repositories. Solange es privat ist, benötigen Beteiligte Zugriff. GitHub bietet keinen allgemeinen privaten Direktnachrichten-Posteingang. Die Noreply-Adresse ist keine Kontaktadresse. Sicherheitslücken: [SECURITY.md](SECURITY.md).
+Fragen, Fehler und Vorschläge bitte über die Issues dieses Repositories. GitHub bietet keinen allgemeinen privaten Direktnachrichten-Posteingang. Die Noreply-Adresse ist keine Kontaktadresse. Sicherheitslücken: [SECURITY.md](SECURITY.md).

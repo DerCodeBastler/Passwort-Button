@@ -2,7 +2,7 @@
 
 ## Deutsch
 
-Fehlerberichte, Dokumentationsverbesserungen und nachvollziehbare Pull Requests sind willkommen. Das Repository soll zunächst privat bleiben. Die MIT-Lizenz gilt für den eigenen Projektanteil; die öffentliche Freigabe steht noch aus. Siehe [Lizenzhinweise](docs/LICENSING.md).
+Fehlerberichte, Dokumentationsverbesserungen und nachvollziehbare Pull Requests sind willkommen. Das Repository ist öffentlich. Die MIT-Lizenz gilt für den eigenen Projektanteil. Siehe [Lizenzhinweise](docs/LICENSING.md).
 
 1. Problem und erwartetes Verhalten in einem Issue beschreiben. Nur künstliche Testdaten verwenden.
 2. Einen eigenen Branch erstellen, die Änderung klein halten und Dokumentation in Deutsch und Englisch aktualisieren.
@@ -14,7 +14,7 @@ Der Maintainer prüft Beiträge vor dem Merge. Kein automatischer Merge und kein
 
 ## English
 
-Bug reports, documentation improvements and focused pull requests are welcome. The repository is intended to stay private initially. The original project contribution is MIT-licensed; public release is pending. See [license notes](docs/LICENSING.md).
+Bug reports, documentation improvements and focused pull requests are welcome. The repository is public. The original project contribution is MIT-licensed. See [license notes](docs/LICENSING.md).
 
 1. Explain the problem and expected behavior in an issue using artificial test data.
 2. Create a branch, keep changes focused, and update German and English documentation.

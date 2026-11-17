@@ -1,8 +1,8 @@
 # Lizenzhinweise / License notes
 
-Der Inhaber hat am 17.11.2026 die MIT-Lizenz für den eigenen Projektanteil bestätigt. Der verbindliche Text steht in [LICENSE](../LICENSE), mit Copyright (c) 2026 DerCodeBastler. Die private Sichtbarkeit des Repositories bleibt erhalten, bis eine öffentliche Freigabe ausdrücklich beauftragt wird.
+Der Inhaber hat am 17.11.2026 die MIT-Lizenz für den eigenen Projektanteil bestätigt. Der verbindliche Text steht in [LICENSE](../LICENSE), mit Copyright (c) 2026 DerCodeBastler. Die öffentliche Freigabe wurde am 17.11.2026 vom Inhaber beauftragt und umgesetzt.
 
-The owner approved MIT licensing of the original project contribution on 2026-11-17. See [LICENSE](../LICENSE), Copyright (c) 2026 DerCodeBastler. The repository stays private until public release is explicitly authorized.
+The owner approved MIT licensing of the original project contribution on 2026-11-17. See [LICENSE](../LICENSE), Copyright (c) 2026 DerCodeBastler. The owner authorized public release on 2026-11-17, and the repository is now public.
 
 Die gelieferten Hinweise für Pico SDK und TinyUSB bleiben unverändert. Die Projektlizenz ersetzt keine Drittanbieterlizenzen. Vor einer neuen Binärveröffentlichung ist die Abdeckung aller tatsächlich eingebundenen SDK-, Runtime- und Toolchain-Komponenten zu prüfen.
 
