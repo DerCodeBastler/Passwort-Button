@@ -1,0 +1,85 @@
+Prüfbericht – KeePass-Taster Pico 2 1.1.0
+10.11.2026
+
+GRUNDLAGE
+KeePass_Pico2_Komplettpaket.zip vom 09.11.2026, aktueller gespeicherter Stand.
+SHA-256 des unveränderten Originals:
+023cff8a616c13c6867450f1a8cbee321a50a9d4a87e0b7ed74e764660fac466
+
+ERGEBNIS: BUILD UND AUTOMATISIERTE SOFTWAREPRÜFUNGEN BESTANDEN.
+Kein Test auf physischem Pico; kein unabhängiges Sicherheitsaudit.
+
+KOMPILAT
+Pico SDK 2.2.0, GNU Arm Embedded GCC 13.2.1, Release.
+Anwendung kompiliert mit -Wall -Wextra -Werror.
+Picotool erkennt: KeePass-Taster Pico 2, Version 1.1.0, Board pico2,
+Ziel RP2350, ARM-Secure-Ausführungsart, Build-Datum 10.11.2026.
+ARM Secure ist nicht gleich Secure Boot: keine OTP-Sperren gesetzt.
+UF2: 64.512 Bytes, 125 reguläre RP2350-Flashblöcke und ein ROM-Kompatibilitätsblock.
+Normaler Binärbereich endet bei 0x10007c0c. Konfigurationssektor ab
+0x103ff000 bleibt vollständig außerhalb der Firmwareblöcke.
+UF2-Magics, Blocknummern, Familien-ID und Identität mit der BIN-Datei geprüft.
+BOOTSEL-Routine liegt im RAM, sperrt Interrupts und enthält keine Unteraufrufe.
+Tatsächlich kompilierte USB-Deskriptoren: CDC + HID; HID-Abfrageintervall 1 ms.
+Kein USB-stdio/UART-stdio/Reset-Interface/OTP-Schreibcode im Symbolbestand.
+
+FIRMWARE MIT SIMULIERTER HARDWARE – ASAN + UBSAN
+- Echter C-Parser, Tasterzustandsautomat, HID-Ablauf und Speicherlogik ausgeführt.
+- Alle 48 Werte von 3 bis 50 ms gespeichert und nach simuliertem Neustart geladen.
+- Bestehendes Passwort bei reiner Tempo-/Enter-Änderung unverändert.
+- V1-Übernahme mit/ohne Enter; Default 3 ms; neue Speicherung als V2.
+- Maximale 256 Tastencodepaare plus Enter erfolgreich ausgegeben.
+- 3/50-ms-Timing gegen simulierte USB-Abschlüsse geprüft.
+- Entprellen, kurzer Klick, lange Freigabe, keine Wiederholung beim Halten.
+- Kein Tippen beim Start/Verbinden mit gedrückter Taste.
+- Eine Schreibaktion pro Freigabe; Ablauf nach 60 Sekunden; DTR-Abfall sperrt.
+- READ/DUMP/TYPE/UNLOCK/RESET usw. abgewiesen; GET_REPORT liefert keine Daten.
+- HID-LED-Berichte ändern nur Caps-Lock-Verhalten und starten keine Ausgabe.
+- Caps Lock, abschließendes Enter, USB-Abbruch/Standby/Stau, Zeitüberlauf geprüft.
+- Falsche Längen, Hexdaten, Tastencodes, Optionen, NUL, Überlauf und Timeout abgewiesen.
+- Flash-Schreibfehler erkannt; beschädigte Daten werden nicht ausgegeben.
+- 20.000 zufällige serielle Frames ohne ASan/UBSan-Fehler oder Passwortausgabe.
+
+EINRICHTUNGSSEITE – TATSÄCHLICHES JAVASCRIPT MIT WEB-SERIAL-TESTDOUBLE
+- Verbindung/Trennung/Wiederverbindung, Schreibfehler, alte Firmware erkannt.
+- Gespeichertes Tempo und Enter geladen; vorhandenes Passwort nie angezeigt.
+- Schieber 3..50, Default 3, Live-Wertanzeige, separate Einstellungsspeicherung.
+- Gesperrtes Schreiben angezeigt; Passwortfelder erst nach Erfolg geleert.
+- Deutsche Tastaturtabelle unverändert gegenüber dem Original.
+- Exakte Zeichenfolgen, Umlaute/Sonderzeichen, 128 Akzente plus Enter geprüft.
+- Ungültige Unicode-Zeichen, Passwortwiederholung und Längenfehler geprüft.
+- Löschbestätigung und Abbrechen geprüft.
+- Keine Netzwerkaufrufe, externen Ressourcen oder Browser-Persistenz im Code.
+- HTML-IDs, Beschriftungen und Slider-Grenzen geprüft.
+
+NICHT DURCHGEFÜHRT / GRENZEN
+Kein physischer Pico verfügbar. USB-Erkennung unter Windows, reale HID-
+Zeitabstände, BOOTSEL, LED, Flash-Persistenz und Stromunterbrechungen wurden
+nicht am Gerät gemessen. Dafür ist der Test mit einem unverfänglichen
+Testpasswort nach dem Flashen vorgesehen.
+Ein zusätzlicher Chromium-Lauftest wurde durch die Ausführungsumgebung
+blockiert; die echte Browseransicht bzw. native Web-Serial-API wurde damit
+nicht geprüft. Der JavaScript-Test mit simuliertem USB ist bestanden.
+Die Prüfungen sind keine formale Verifikation aller möglichen USB-Angriffe.
+
+PASSWORTSCHUTZ
+Die geprüfte Firmware bietet im normalen Betrieb keinen USB-Befehl, der das
+Passwort liest oder seine Ausgabe auslöst. Tastenausgabe beginnt nur nach
+einem gültigen kurzen BOOTSEL-Klick. Lange Tastengeste gibt Änderungen frei.
+Der PC kann das Passwort bei Einrichtung und Tastaturausgabe mitlesen.
+Das Geheimnis ist im Flash nicht verschlüsselt. Physisches Auslesen,
+Debugging oder eine fremde Firmware werden nicht verhindert. Es besteht
+keine absolute Garantie „nur durch Tastendruck auslesbar“.
+
+TECHNISCHE PRIMÄRQUELLEN
+Raspberry Pi: BOOTSEL-Abfrage in RAM
+https://github.com/raspberrypi/pico-examples/blob/master/picoboard/button/button.c
+Raspberry Pi: Picotool / USB-stdio-Reset und irreversible OTP-Konfiguration
+https://github.com/raspberrypi/picotool
+Raspberry Pi: RP2350-Sicherheitsfunktionen
+https://pip-assets.raspberrypi.com/categories/1260-security/documents/RP-009377-WP-1-Understanding%2520RP2350_s%2520security%2520features.pdf
+TinyUSB: tatsächlich verwendeter HID-Stack (festgelegter Stand)
+https://github.com/hathach/tinyusb/blob/86ad6e56c1700e85f1c5678607a762cfe3aa2f47/src/class/hid/hid_device.c
+
+Einzelne PASS-Ausgaben: Quellcode/Pruefergebnisse.txt.
+Dateiprüfsummen des fertigen Pakets: SHA256.txt.

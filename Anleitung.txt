@@ -1,0 +1,114 @@
+Passwort-Button – Raspberry Pi Pico 2 (RP2350A)
+Version 1.1.0 – 10.11.2026
+
+FERTIG KOMPILIERT – DU MUSST NICHTS PROGRAMMIEREN
+Dieses Paket enthält die unveränderte Firmware 1.1.0 vom 10.11.2026. Die passende UF2, Einrichtungsseite, Quellen und Prüfungen sind enthalten.
+
+UPDATE
+1. ZIP vollständig entpacken.
+2. Pico abziehen. BOOTSEL gedrückt halten, USB einstecken, Taster loslassen.
+3. KeePass_Pico2_3ms.uf2 auf das Laufwerk RP2350 kopieren.
+4. Der Pico startet automatisch neu und erscheint als USB-Tastatur mit
+   Einrichtungsanschluss. Im normalen Betrieb gibt es kein USB-Laufwerk.
+5. Passwort_einrichten.html aus diesem NEUEN Paket in Chrome oder Edge am
+   Windows-PC öffnen. Kein Webserver und keine zusätzliche Software nötig.
+6. Auf „1. Pico verbinden“ klicken und „KeePass-Taster Pico 2“ auswählen.
+   Der Button wird nach erfolgreicher Prüfung grün.
+
+Ein gültiges Passwort im unterstützten V1-Speicherformat wird einschließlich der
+bisherigen Enter-Option übernommen. Der alte Speicherbereich wird von der
+UF2 nicht überschrieben. Die neue Standardverzögerung beträgt 3 ms.
+Bei unbekanntem oder beschädigtem Speicher bleibt das Passwort leer.
+Die neue Seite benötigt die neue Firmware; die alte Seite passt nicht mehr.
+
+GESCHWINDIGKEIT ÄNDERN – PASSWORT NICHT ERNEUT EINGEBEN
+1. Seite öffnen und Pico verbinden. Gespeichertes Tempo und Enter werden
+   geladen; das Passwort wird niemals zurückgelesen oder angezeigt.
+2. Schieber auf 3 bis 50 ms stellen. Optional Enter an- oder ausschalten.
+3. Am bereits verbundenen Pico BOOTSEL etwa 2 Sekunden gedrückt halten,
+   bis die LED doppelt blinkt, dann loslassen.
+4. Innerhalb von 60 Sekunden „Tempo und Enter speichern“ anklicken.
+   Das vorhandene Passwort bleibt erhalten. Die Änderungen werden dauerhaft
+   im Flash gespeichert und bleiben auch ohne Strom erhalten.
+5. Nach einer gültigen Schreibaktion ist die Einrichtung wieder gesperrt.
+   Für eine weitere Änderung BOOTSEL erneut etwa 2 Sekunden halten.
+
+3 ms ist die Mindestpause nach einer abgeschlossenen HID-Meldung. Drücken
+und Loslassen sind getrennte Meldungen: Ein normales Zeichen braucht daher
+mindestens ungefähr 6 ms plus USB-Abfragezeit. Die Tastatur wird jede
+Millisekunde vom Host abgefragt. Akzenttasten benötigen zusätzliche Meldungen.
+Wenn Zeichen fehlen, einen höheren Wert wählen, zum Beispiel 5 oder 10 ms.
+Die Einstellung beschreibt eine Pause, keine garantierte Zeichengeschwindigkeit.
+
+PASSWORT EINRICHTEN ODER ÄNDERN
+1. Seite öffnen und verbinden.
+2. Neues Passwort zweimal eingeben; Tempo und Enter auswählen.
+3. BOOTSEL etwa 2 Sekunden halten, bis die LED doppelt blinkt; loslassen.
+4. „Passwort und Einstellungen speichern“ anklicken.
+5. Die beiden Passwortfelder werden bei Erfolg geleert.
+
+Zuerst mit einem unverfänglichen Testpasswort im Editor ausprobieren.
+Danach erst das echte Passwort lokal einrichten. Windows-Tastaturlayout:
+Deutsch (Deutschland). Nicht dein echtes Passwort an ChatGPT schicken.
+
+VERWENDUNG
+Gewünschtes Passwortfeld anklicken (z. B. in KeePass), BOOTSEL kurz drücken und loslassen.
+Der Pico tippt genau einmal; mit aktivierter Option folgt automatisch Enter.
+Kein Tippen beim Einstecken, bei USB-Befehlen oder durch langes Gedrückthalten.
+Die LED leuchtet während der Ausgabe und kurz nach dem Speichern.
+Ohne Passwort: einmal kurz blinken, dann längere Pause (2 Sekunden Takt).
+Einrichtungsfreigabe: Doppelblinken; nach 60 Sekunden automatisch gesperrt.
+Ein kurzer Klick während dieser Freigabe schließt sie, ohne etwas zu tippen.
+Eine unterbrochene Ausgabe wird nach USB-Trennung oder Standby nicht fortgesetzt.
+
+LÖSCHEN
+„Gespeichertes Passwort löschen“ aufklappen, BOOTSEL etwa 2 Sekunden halten,
+„Passwort löschen …“ und anschließend „Ja, Passwort löschen“ anklicken.
+Tempo bleibt erhalten, Enter wird ausgeschaltet.
+
+WAS DER SCHUTZ LEISTET
+Im laufenden Betrieb gibt es über USB keinen Befehl zum Lesen des Passworts
+und keinen Befehl, der das Passwort automatisch eintippen lässt. Nur ein
+entprellter kurzer BOOTSEL-Klick startet die Ausgabe. HID-GET_REPORT liefert
+keine Passwortdaten. Status zeigt nur vorhanden/leer, Tempo, Enter und Sperre.
+Auch Schreiben und Löschen benötigen zuvor die lange BOOTSEL-Tastengeste.
+Während des Freigabefensters kann Software auf dem PC Einstellungen ändern;
+es gibt keine Unterscheidung zwischen dieser Seite und anderer PC-Software.
+Es gibt kein USB-Laufwerk, keine Debug-Konsole und keinen USB-Befehl zum
+Wechsel in den Bootloader; auch der übliche 1200-Baud-Reset ist deaktiviert.
+
+WAS DER SCHUTZ NICHT LEISTET
+Beim Einrichten und bei der Ausgabe nach Tastendruck kann der PC das
+Passwort mitlesen. Das lässt sich bei diesem USB-Tastaturprinzip nicht
+verhindern. Ein infizierter PC ist damit nicht vor dem Passwort geschützt.
+Das Passwort liegt weiterhin unverschlüsselt als Tastencodes im Flash.
+Bootloader-Zugriff bei physischem Zugriff, SWD-Debugging, Austausch der
+Firmware oder direktes Auslesen des Flashchips werden nicht verhindert.
+Die Forderung „unter allen Umständen nur durch Taster auslesbar“ ist mit
+dieser normalen, weiterhin frei flashbaren UF2 daher nicht garantiert.
+Es werden keine irreversiblen OTP-Sperren oder Secure-Boot-Schlüssel gesetzt.
+Das Gerät bleibt über BOOTSEL aktualisierbar. „ARM Secure“ in den UF2-Metadaten
+bezeichnet die Prozessor-Ausführungsart und bedeutet NICHT aktivierten
+Secure Boot oder verschlüsselten Passwortspeicher.
+Löschen ist keine Zusicherung forensisch sicherer Entfernung alter Daten.
+
+ZEICHEN
+Bis 128 Zeichen: A–Z, a–z, Ziffern, Leerzeichen, druckbare ASCII-Sonderzeichen
+und ä ö ü Ä Ö Ü ß § € ° µ ² ³ ´. Die deutsche Belegung des Originals bleibt
+unverändert. Caps Lock wird berücksichtigt. ^, ´ und ` werden mit einer
+zusätzlichen Leertaste als einzelne Akzentzeichen ausgegeben.
+Auch 128 Akzentzeichen plus optionales Enter sind möglich.
+
+PRÜFUNG
+UF2 für Pico 2 / RP2350 kompiliert und auf Format, Zielplattform, Binärinhalt
+und freien Passwortsektor geprüft. Automatisierte Firmware- und Seitentests
+bestanden. Einzelheiten stehen in Pruefbericht.txt.
+Kein physischer Pico war angeschlossen. Tatsächliche USB-Erkennung, Windows-
+Zeichenausgabe, Taster, LED und Verhalten bei Stromausfall sind hier nicht
+am Gerät getestet. Eine absolute Sicherheitsgarantie wird nicht behauptet.
+
+RÜCKKEHR ZU CIRCUITPYTHON ODER ANDERER FIRMWARE
+Pico abziehen, BOOTSEL halten, USB einstecken und eine passende offizielle
+Pico-2-UF2 auf RP2350 kopieren. Andere Firmware kann den Passwortbereich
+überschreiben oder lesen. Die Firmware aus diesem Paket löscht beim
+normalen Update den letzten 4-KiB-Konfigurationssektor nicht.

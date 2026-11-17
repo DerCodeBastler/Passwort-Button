@@ -1,0 +1,23 @@
+name: Package and host tests
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Tool versions
+        run: |
+          python3 --version
+          node --version
+          gcc --version
+      - name: Package integrity
+        run: python3 scripts/check_package.py
+      - name: Firmware host tests (ASan and UBSan)
+        run: python3 Quellcode/tests/test_protocol.py
+      - name: Setup JavaScript tests
+        run: node Quellcode/tests/test_setup.cjs

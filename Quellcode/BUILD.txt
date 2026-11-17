@@ -1,0 +1,86 @@
+KeePass-Taster Pico 2 – 1.1.0, 10.11.2026
+
+Fertige UF2 liegt im Hauptordner. Diese Schritte sind nur zum Selbstbauen.
+
+Festgelegte Abhängigkeiten
+Pico SDK 2.2.0: a1438dff1d38bd9c65dbd693f0e5db4b9ae91779
+TinyUSB: 86ad6e56c1700e85f1c5678607a762cfe3aa2f47
+Picotool 2.2.0: a7eb3988f0645239185fadb4e25d8279478c2dbb
+GNU Arm Embedded GCC 13.2.1, CMake 3.28.3, Ninja, Release
+Compileroptionen des Anwendungscodes: -Wall -Wextra -Werror
+
+Bauen (aus diesem Quellcode-Ordner, Toolchain im PATH)
+git clone --branch 2.2.0 https://github.com/raspberrypi/pico-sdk.git
+git -C pico-sdk checkout a1438dff1d38bd9c65dbd693f0e5db4b9ae91779
+git -C pico-sdk submodule update --init lib/tinyusb
+cmake -S firmware -B build -G Ninja -DPICO_BOARD=pico2 -DPICO_PLATFORM=rp2350-arm-s -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j 4
+
+Alternativ ein vorhandenes SDK mit -DPICO_SDK_PATH=/absoluter/pfad/pico-sdk
+angeben. Picotool 2.2.0 kann über -Dpicotool_DIR=/pfad/zur/installation
+bereitgestellt werden. Das SDK benötigt Picotool für RP2350-UF2-Dateien.
+Build-Datum und absolute Debugpfade können bei Neubauten andere Dateihashes
+erzeugen. Funktionale Reproduzierbarkeit, keine zugesagte Bitidentität.
+
+Softwaretests (GCC auf dem Host, Python 3 und Node.js)
+python3 tests/test_protocol.py
+node tests/test_setup.cjs
+python3 tests/verify_uf2.py build
+
+Der Firmwaretest bindet den tatsächlichen main.c-Code ein. Er ersetzt nur
+Flash/USB/BOOTSEL/LED/Zeit durch Test-Hardware, keinen Parser und keine
+Tasterlogik. ASan und UBSan sind aktiv; LeakSanitizer ist im Container aus.
+Es werden keine realen Passwörter verwendet.
+Der Seitentest führt das tatsächliche JavaScript mit Web-Serial-Testdouble aus.
+Der UF2-Test benötigt arm-none-eabi-nm im PATH (oder ARM_NM als Pfad).
+
+Optionaler Test in echtem Chromium mit simulierter Web-Serial-Verbindung:
+node tests/test_browser.cjs
+Benötigt das Node-Paket playwright und Chromium. Unter Linux ist der
+Standardpfad /usr/bin/chromium; CHROMIUM_PATH kann diesen ersetzen.
+SCREENSHOT_DIR ist optional. Dieser zusätzliche Browser-Lauftest konnte
+in der Erstellungsumgebung wegen Browser-/Prozessbeschränkungen nicht laufen.
+Er ist ausdrücklich kein bestandener Hardware- oder Browser-USB-Test.
+
+Protokoll V2
+STATUS
+  READY DE V2 DELAY=3 ENTER=1 LOCKED
+  oder EMPTY ...; letzter Wert OPEN, wenn physisch freigegeben.
+SET <3..50> <0|1> <hexadezimale Tastencode/Modifier-Paare>
+  Neues Passwort ohne angehängtes Enter-Paar; Enter hat ein eigenes Flag.
+CONFIG <3..50> <0|1>
+  Bestehendes Passwort behalten, nur Tempo und Enter ändern.
+CLEAR
+  Passwort löschen; Tempo behalten, Enter ausschalten.
+
+SET, CONFIG, CLEAR brauchen eine Freigabe durch mindestens ca. 2 Sekunden
+BOOTSEL. Maximal 60 Sekunden und eine gültige Schreibaktion. Die Freigabe
+wird bei USB-Sitzungswechsel/DTR-Abfall geschlossen. Unbekannte Befehle
+werden abgewiesen. Es gibt weder READ/DUMP/TYPE noch eine Reset-Funktion.
+Eine lange Tastengeste verwirft bereits empfangene unvollständige Frames.
+Serial-Framing: ASCII, LF, optional CR, begrenzte Länge, 1 Sekunde Timeout.
+
+Speicher
+Letzter 4-KiB-Sektor des 4-MiB-Flashs bei Offset 0x3ff000.
+V2: magic=0x4b503202; count; checksum; delay_ms; append_enter; pairs[512].
+32-Bit-Felder in nativer Little-Endian-Reihenfolge. Prüfsumme schützt vor
+zufälliger Beschädigung, sie ist keine Authentifizierung/Verschlüsselung.
+V1 aus dem Original (magic=0x4b503201) wird im RAM übernommen. Ein letztes
+Enter-Paar wird in das Enter-Flag umgewandelt; Tempo wird 3 ms.
+Erst beim nächsten Speichern wird V2 in den Flash geschrieben.
+Ein Sektor, kein Journal: Stromausfall während des Speicherns kann eine
+Neueinrichtung nötig machen. Erfolgreiche Schreibvorgänge werden zurückgelesen
+und verglichen; beschädigte Datensätze lösen keine Passwortausgabe aus.
+
+USB / Taster
+CDC + HID-Tastatur, CAFE:4015, Geräteversion 1.1.0, HID-Intervall 1 ms.
+USB-stdio und UART-stdio explizit deaktiviert. Kein MSC/Vendor/Reset-Interface.
+GET_REPORT gibt keine Nutzdaten zurück. SET_REPORT akzeptiert nur Tastatur-
+LED-Ausgabe; Caps Lock startet keine Passwortausgabe.
+Ein Kern; BOOTSEL im RAM, Interrupts während der Flash-CS-Abfrage gesperrt.
+3..50 ms Abstand nach abgeschlossener HID-Meldung. 150 ms Vorlauf nach Klick.
+Abbruch bei Disconnect, Suspend, Transferfehler oder 250 ms ohne Fortschritt.
+Ein bereits im USB-Controller eingereihtes Einzelpaket lässt sich dadurch
+nicht rückwirkend zurückholen. Nach einem Abbruch wird kein Rest fortgesetzt.
+
+Sicherheitsgrenzen und Bedienung: siehe Anleitung.txt im Hauptordner.

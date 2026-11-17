@@ -1,0 +1,30 @@
+# Build-Ergebnisse und lokale Umgebung
+build/
+**/build/
+.cache/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+# Lokale Geheimnisse
+.env
+.env.*
+*.secret
+*.secrets
+
+# Dependencies, local artifacts and sensitive exports
+node_modules/
+Quellcode/pico-sdk/
+*.elf
+*.bin
+*.dis
+*.map
+*.pem
+*.key
+*.p12
+*.pfx
+*.log
+flash-dumps/
+screenshots/

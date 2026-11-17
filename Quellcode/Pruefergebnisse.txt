@@ -1,0 +1,13 @@
+PASS: Protokoll, USB-Lesesperre, 48 persistente Tempostufen, Enter, Löschung, Eingabegrenzen
+PASS: Originalformat übernommen, Enter erhalten, beschädigte Datensätze abgelehnt
+PASS: physische Klicks, Halten/Entprellen, 3/50-ms-HID-Timing, Caps Lock, Enter, Zeitüberlauf
+PASS: Suspend/Trennen/USB-Stau brechen Ausgabe ab; Flashfehler erkannt; DTR sperrt Einrichtung
+PASS: 20.000 zufällige Frames ohne Speicherfehler/Passwortausgabe
+ALLE FIRMWARETESTS BESTANDEN (simulierte Hardware)
+
+PASS: Web-Serial-Handshake, alter Firmwarestand abgewiesen, persistente Werte geladen, 3–50-ms-Schieber, Änderungen ohne Passwort
+PASS: Tastensperre, deutsches Layout unverändert, 128 Akzentzeichen + Enter, Unicode/Längenfehler, Löschbestätigung
+PASS: Disconnect/Reconnect/Schreibfehler, Passwortfelder geleert, keine Netzaufrufe/Browser-Persistenz
+
+PASS: 125 RP2350 ARM Secure flash blocks, ROM compatibility block, binary identity, no overlap with configuration sector, BOOTSEL in RAM without calls
+PASS: HID-Abfrage 1 ms, nur CDC + Tastatur, kein Laufwerk/Reset-Interface/USB-stdio/OTP-Code
